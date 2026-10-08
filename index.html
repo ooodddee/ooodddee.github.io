@@ -252,6 +252,7 @@ section,[id]{scroll-margin-top:64px}
 .ki-bar .fill{position:absolute;inset:0 auto 0 0;width:0;background:#C4473A;transition:width 1s cubic-bezier(.3,0,.2,1)}
 .ki-bar .fill.low{background:#4E9A47}
 .ki-bar b{font-family:var(--pixel);font-weight:400}
+.ki-key{display:flex;gap:14px;font-size:.78rem;color:var(--muted);margin:4px 0 0}.ki-key span::before{content:"";display:inline-block;width:10px;height:10px;background:var(--c);margin-right:5px;vertical-align:-1px}
 .rl-open{font-family:var(--pixel);font-size:1rem;padding:8px 16px;background:var(--ink);color:var(--bg);border:2px solid var(--ink);box-shadow:3px 3px 0 color-mix(in srgb,var(--ink) 35%,transparent);cursor:pointer}
 .rl-open:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 color-mix(in srgb,var(--ink) 35%,transparent)}
 .rl-title{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left;border-bottom:2px solid var(--line)}
@@ -536,7 +537,7 @@ section,[id]{scroll-margin-top:64px}
         <p class="pq">How can an LLM <mark class="hl">retrieve facts</mark> about a trans-border community yet still represent its identity through <mark class="hl">a single nation-state frame</mark>?</p>
         <p class="statuses"><span class="status done">IC2S2 ’26 · Parallel Presentation</span><span class="status">Under review at ARR</span></p>
         <p class="kf"><span>Key finding</span><mark class="hl">Factual accessibility does not reliably predict narrative framing</mark>.</p>
-        <p class="pl"><button type="button" class="rl-open" data-open-ki>▶ See it in one minute</button><a href="papers/knowing-is-not-telling.pdf">PDF</a><a href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">GitHub</a><a href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a></p>
+        <p class="pl"><button type="button" class="rl-open" data-open-ki>▶ See it in one minute</button><a href="identity-ossification/">Project page →</a><a href="papers/knowing-is-not-telling.pdf">PDF</a><a href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">GitHub</a><a href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a></p>
       </div>
     </article>
     <article class="pj">
@@ -1477,11 +1478,22 @@ const ME={id:'me',
 (function(){
   const box=document.getElementById('kix');if(!box)return;
   const cn=document.getElementById('kixCanvas'),c=cn.getContext('2d'),W4=180,H4=100,layer=document.getElementById('kixLayer');
-  const villager=hair=>({map:["....kkkkkk....","...khhhhhhk...","..khhhhhhhhk..","..khhhhhhhhk..","..khsssssshk..","..kssksskssk..","..kssssssssk..","..kSssmmssSk..","...kSssssSk...","....kkSSkk....","..kcccccccck..",".kcccccccccck.",".kyyyyyyyyyyk.",".kcCccccccCck.",".ksCccccccCsk.","..kppppppppk.."],pal:{h:hair,c:'#3D4F8A',C:'#2E3C6B',p:'#2B2F3A',y:'#C4473A'},acc:[]});
+  const BODY=["..khsssssshk..","..kssksskssk..","..kssssssssk..","..kSssmmssSk..","...kSssssSk...","....kkSSkk....","..kcccccccck..",".kcccccccccck.",".kyyyyyyyyyyk.",".kcCccccccCck.",".ksCccccccCsk.","..kppppppppk.."];
+  const HAIR=["....kkkkkk....","...khhhhhhk...","..khhhhhhhhk..","..khhhhhhhhk.."];
+  const WRAP=["....kkkkkk....","...kwwwwwwk...","..kwwwwwwwwk..",".kwwWwwwwWwwk."];
+  const villager=(o)=>({map:(o.wrap?WRAP:HAIR).concat(BODY),pal:{h:o.hair,c:o.coat,C:o.shade,p:'#2B2F3A',y:'#C4473A',w:o.wrapc||'#2B2F3A',W:o.wrapd||'#1F2228',e:'#E3B23C',q:'#B98552',Q:'#8A5A2E'},acc:o.acc||[]});
   // six people in the same jacket: one heritage, before any line was drawn
-  const HAIRS=['#2B1E1A','#3A2A20','#1F1A1A','#2B1E1A','#3A2A20','#1F1A1A'];
+  const EAR=[{ox:1,oy:8,m:["e"]},{ox:12,oy:8,m:["e"]}];
+  const BASKET=[{ox:11,oy:9,m:["kkkk","kqQk","kQqk","kqQk","kkkk"]}];
+  const LOOKS=[
+    {hair:'#2B1E1A',coat:'#3D4F8A',shade:'#2E3C6B',wrap:true,wrapc:'#2B2F3A',wrapd:'#1F2228'},
+    {hair:'#1F1A1A',coat:'#2E2E36',shade:'#1E1E24'},
+    {hair:'#3A2A20',coat:'#3E5E4A',shade:'#2E4A38',acc:EAR},
+    {hair:'#2B1E1A',coat:'#3D4F8A',shade:'#2E3C6B'},
+    {hair:'#1F1A1A',coat:'#2E2E36',shade:'#1E1E24',wrap:true,wrapc:'#3E5E4A',wrapd:'#2E4A38'},
+    {hair:'#3A2A20',coat:'#3E5E4A',shade:'#2E4A38',acc:BASKET}];
   const SIDE=[[24,74],[46,88],[66,78],[114,78],[134,88],[156,74]];
-  const P=HAIRS.map((h,i)=>({spr:villager(h),x:30+i*24,y:60+(i%3)*12,tx:0,ty:0,wait:i*20,side:SIDE[i],flip:false}));
+  const P=LOOKS.map((o,i)=>({spr:villager(o),x:30+i*24,y:60+(i%3)*12,tx:0,ty:0,wait:i*20,side:SIDE[i],flip:false}));
   P.forEach(p=>{p.tx=p.x;p.ty=p.y;});
   const FL=2,FR=3; // the two who hold the thread
   let border=0,borderTarget=0,thread='none',greyL=false,drops=[],t=0,wander=true;
@@ -1492,7 +1504,7 @@ const ME={id:'me',
     {text:'Some traditions still cross the line. In both communities, men <b>recite their ancestors’ names</b>, back fifty generations or more.',border:1,names:true,thread:'lit'},
     {text:'Ask an AI directly: <b>the fact is accessible</b>.',border:1,names:true,thread:'lit',chat:'direct'},
     {text:'Ask it openly, and <b>the cross-border connection is left out</b> of its representation.',border:1,names:true,thread:'broken',chat:'open'},
-    {text:'Not a one-off. Across <b>9 communities and 5 models</b>, AI narratives fold cross-border identities into one country’s story.',border:1,names:true,thread:'broken',chat:'bars',note:'Share of responses showing this pattern, in the two main models.'},
+    {text:'Not a one-off. Across <b>9 communities and 5 models</b>, AI narratives fold cross-border identities into one country’s story.',border:1,names:true,thread:'broken',chat:'bars',note:'Share of responses showing at least one ossification pattern.'},
     {text:'<b>Knowing is not telling.</b> The fact was there. The frame left it out.',border:1,names:true,thread:'broken',chat:'end'}
   ];
   let step=0,run=0;
@@ -1528,7 +1540,8 @@ const ME={id:'me',
     if(S.thread==='broken'){if(breakNow){drops=[];for(let k=0;k<=60;k++){const [x,y]=arc(k/60);drops.push({x,y,vx:(Math.random()-.5)*.4,vy:-Math.random()*.6});}}thread='broken';greyL=true;}
     if(S.chat==='bars'){
       const wrap=document.createElement('div');wrap.className='ki-bars';
-      wrap.innerHTML='<div class="ki-bar">GPT-5.1, asked in English <b>10.1%</b><div class="track"><div class="fill low" data-w="10.1"></div></div></div><div class="ki-bar">DeepSeek-V3.2, asked in Chinese <b>62.6%</b><div class="track"><div class="fill" data-w="62.6"></div></div></div>';
+      const BARS=[['GPT-5.1','English',10.1],['GPT-5.1','Chinese',33.3],['DeepSeek-V3.2','English',25.3],['DeepSeek-V3.2','Chinese',62.6]];
+      wrap.innerHTML=BARS.map(([m,l,v])=>'<div class="ki-bar"><span>'+m+' · '+l+'</span> <b>'+v+'%</b><div class="track"><div class="fill" data-w="'+v+'" style="background:'+(l==='English'?'#7FA6C9':'#C4473A')+'"></div></div></div>').join('')+'<p class="ki-key"><span style="--c:#7FA6C9">asked in English</span><span style="--c:#C4473A">asked in Chinese</span></p>';
       chat.appendChild(wrap);requestAnimationFrame(()=>wrap.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%'));
     }
     if(S.chat==='end'){

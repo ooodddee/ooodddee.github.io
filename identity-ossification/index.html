@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Knowing Is Not Telling · Minglu Sun</title>
+<meta name="description" content="Identity ossification: LLMs can retrieve facts about trans-border communities yet still represent their identity through a single nation-state frame. A study of nine communities, five models, two languages.">
+<link rel="canonical" href="https://ooodddee.github.io/identity-ossification/">
+<meta property="og:title" content="Knowing Is Not Telling: Identity Ossification in LLM Representations of Trans-border Communities">
+<meta property="og:description" content="LLMs can retrieve cross-border facts, yet still narrate these communities through one country.">
+<meta property="og:image" content="https://ooodddee.github.io/og-image.png">
+<link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,650&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EDEFEA;--surface:#F8F9F6;--ink:#1E2729;--muted:#5B676A;--line:#CDD3CC;--ai:#6C7A86;--ai-soft:#E2E7EA;--focus:#3D6FB6;--hl:#C98A12;
+  --sans:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;--pixel:"Pixelify Sans","Courier New",monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161C1E;--surface:#1F2729;--ink:#E7ECEA;--muted:#9AA6A8;--line:#34403F;--ai:#98A7B3;--ai-soft:#263035;--focus:#7FA6E0}}
+:root[data-theme="dark"]{--bg:#161C1E;--surface:#1F2729;--ink:#E7ECEA;--muted:#9AA6A8;--line:#34403F;--ai:#98A7B3;--ai-soft:#263035;--focus:#7FA6E0}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+mark.hl,.hl{-webkit-box-decoration-break:clone;box-decoration-break:clone;font-weight:inherit;color:inherit;background:color-mix(in srgb,#E3B23C 26%,transparent);box-shadow:inset 0 -2px 0 var(--hl);padding:0 .08em}
+.top{position:sticky;top:0;z-index:30;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px;padding:0 clamp(16px,4vw,40px);background-image:linear-gradient(90deg,var(--line) 50%,transparent 50%);background-size:8px 2px;background-repeat:repeat-x;background-position:left bottom}
+.top a{font-family:var(--pixel);text-decoration:none;font-size:.95rem;color:var(--muted)}.top a:hover{color:var(--ink)}
+.top nav{display:flex;gap:18px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.wrap{max-width:1060px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+section{padding:clamp(56px,10vh,110px) 0;border-top:1.5px solid var(--line)}
+section:first-of-type{border-top:0}
+.eyebrow{font-family:var(--pixel);font-size:.9rem;color:var(--muted);margin:0 0 10px}
+h1{font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.15;letter-spacing:-.02em;margin:0 0 14px;max-width:46ch;text-wrap:pretty}
+h2{font-size:clamp(1.35rem,2.4vw,1.85rem);line-height:1.25;letter-spacing:-.015em;margin:0 0 14px;max-width:none;text-wrap:pretty}
+.lede{font-size:clamp(1.1rem,1.8vw,1.35rem);line-height:1.45;max-width:64ch;margin:0 0 18px}
+.prose{max-width:62ch}.prose p{margin:0 0 14px}
+.muted{color:var(--muted)}
+.authors{margin:0 0 12px;font-size:1rem}.authors span{color:var(--muted)}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.badge{display:inline-flex;align-items:center;gap:7px;font-size:.85rem;padding:2px 9px 2px 7px;border:1.5px solid var(--line)}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;border:1.5px solid var(--muted)}.badge.done::before{background:var(--ink);border-color:var(--ink)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font-family:var(--pixel);font-size:.95rem;text-decoration:none;padding:7px 14px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.btn.solid{background:var(--ink);color:var(--bg)}.btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 color-mix(in srgb,var(--ink) 30%,transparent)}
+/* story panel (shared look with the home site) */
+.rlx-panel{margin-top:28px;background:var(--surface);border:3px solid var(--ink);box-shadow:6px 6px 0 rgba(0,0,0,.18);padding:clamp(14px,2.6vw,26px);display:flex;flex-direction:column;gap:14px}
+.rlx-top{display:flex;align-items:center;gap:14px}.rlx-name{font-family:var(--pixel)}.rlx-count{font-family:var(--pixel);font-size:.9rem;color:var(--muted)}
+.rlx-text{margin:0;font-size:clamp(1.05rem,1.8vw,1.35rem);line-height:1.35;font-weight:500;max-width:none;text-wrap:pretty}
+.rlx-chatwrap{position:relative;min-height:200px}
+@media (min-width:761px){.rlx-text{height:2.75em;overflow:hidden}.rlx-chat{position:absolute;inset:0;overflow:auto;padding-right:4px}.rlx-note{height:1.3em}}
+.rlx-text b{font-weight:600;background:color-mix(in srgb,#E3B23C 26%,transparent);box-shadow:inset 0 -2px 0 var(--hl);padding:0 .08em}
+.rlx-main{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(0,1fr);gap:16px;align-items:start}
+.rlx-stage{position:relative;border:2px solid var(--ink);line-height:0}
+.rlx-stage canvas{width:100%;height:auto;aspect-ratio:180/100;image-rendering:pixelated;display:block}
+.rl-layer{position:absolute;inset:0;line-height:1.2;pointer-events:none}
+.rl-tag{position:absolute;transform:translate(-50%,0);font-family:var(--pixel);font-size:.7rem;background:#FFFDF7;color:#1E2729;border:1.5px solid #1E2729;padding:0 4px;white-space:nowrap;animation:pop .2s steps(3,end)}
+.rl-tag.miss{background:#F6C2B8}.rl-tag.back{background:#CFE8B0}
+@keyframes pop{0%{transform:translate(-50%,0) scale(.6);opacity:0}100%{transform:translate(-50%,0) scale(1);opacity:1}}
+.rlx-chat{display:flex;flex-direction:column;gap:10px;min-height:120px}
+.msg{padding:8px 12px;border-radius:14px;font-size:.9rem;line-height:1.45}
+.msg.user{align-self:flex-end;background:var(--ink);color:var(--bg);border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:var(--ai-soft);border-bottom-left-radius:4px}
+.who{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 -6px}
+.dots span{display:inline-block;width:6px;height:6px;margin-right:4px;border-radius:50%;background:var(--ai);animation:blink 1s infinite}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}@keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+.ki-bars{display:flex;flex-direction:column;gap:10px}.ki-bar{font-size:.86rem}.ki-bar b{font-family:var(--pixel);font-weight:400}
+.ki-bar .track{height:14px;background:color-mix(in srgb,var(--muted) 18%,transparent);margin-top:4px;position:relative}
+.ki-bar .fill{position:absolute;inset:0 auto 0 0;width:0;background:#C4473A;transition:width 1s}.ki-bar .fill.low{background:#4E9A47}
+.rlx-note{margin:0;font-size:.8rem;color:var(--muted);min-height:1.2em}
+.rlx-nav{display:flex;align-items:center;gap:12px}.rlx-dots{flex:1;display:flex;justify-content:center;gap:6px}.rlx-dots i{width:9px;height:9px;background:var(--line)}.rlx-dots i.on{background:var(--ink)}
+.rlx-btn{font-family:var(--pixel);font-size:.95rem;padding:7px 14px;background:var(--ink);color:var(--bg);border:2px solid var(--ink);cursor:pointer;text-decoration:none}
+.rlx-btn.ghost{background:transparent;color:var(--ink)}.rlx-btn:disabled{opacity:.3;cursor:default}.rlx-links{display:flex;gap:8px;flex-wrap:wrap}
+.fadeIn{animation:fadeIn .3s ease both}@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.hint{font-size:.85rem;color:var(--muted);margin:0}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:24px}
+.tile{border:2px solid var(--ink);background:var(--surface);padding:6px 6px 8px;cursor:pointer;color:var(--ink);font:inherit;text-align:center}
+.tile canvas{width:100%;height:auto;aspect-ratio:60/30;image-rendering:pixelated;display:block;border:1.5px solid var(--ink);margin-bottom:6px}
+.tile b{display:flex;justify-content:space-between;font-family:var(--pixel);font-weight:400;font-size:.9rem;padding:0 4px}
+.tile[aria-selected="true"]{box-shadow:4px 4px 0 var(--ink);transform:translate(-2px,-2px)}
+.tile-info{margin-top:16px;min-height:3.4em;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tile-info .chip{font-family:var(--pixel);font-size:.82rem;padding:1px 8px;border:2px solid var(--ink);background:var(--surface)}
+.tile-info .one{flex-basis:100%;color:var(--muted);font-size:.92rem;margin:4px 0 0}
+.verdicts{display:flex;flex-wrap:wrap;gap:10px}
+.verdicts span{font-family:var(--pixel);padding:5px 12px;border:2px solid var(--ink)}
+.verdicts .ok{background:#CFE8B0;color:#1E2729}.verdicts .no{background:#F6C2B8;color:#1E2729}
+.matrix{display:grid;grid-template-columns:auto repeat(2,minmax(0,160px));gap:6px;margin:12px 0 26px;align-items:stretch;max-width:520px}
+.matrix .h{font-size:.82rem;color:var(--muted);align-self:end;text-align:center}
+.matrix .r{font-size:.9rem;align-self:center;padding-right:8px}
+.matrix button{font:inherit;border:2px solid var(--ink);cursor:pointer;padding:14px 8px;text-align:center}
+.matrix button b{display:block;font-family:var(--pixel);font-weight:400;font-size:clamp(1.6rem,4vw,2.4rem);line-height:1}
+.matrix button[aria-pressed="true"]{box-shadow:4px 4px 0 var(--ink);transform:translate(-2px,-2px)}
+.heat td.dim .cell{opacity:.22}
+.ki-key{display:flex;gap:14px;font-size:.78rem;color:var(--muted);margin:4px 0 0}.ki-key span::before{content:"";display:inline-block;width:10px;height:10px;background:var(--c);margin-right:5px;vertical-align:-1px}
+.key .axis{margin-left:auto}.key .axis::before{display:none!important}
+.pat .flip{font-family:var(--pixel);font-size:.85rem;align-self:flex-start;padding:3px 10px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.pat .ex{display:none;flex-direction:column;gap:8px}.pat.open .ex{display:flex}
+
+/* communities-cards */
+.colhead{margin:0 0 4px;font-size:.88rem;color:var(--muted)}.colhead b{font-family:var(--pixel);font-weight:400;color:var(--ink);margin-right:6px;font-size:1rem}
+.cpick{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 12px}
+.cpick button{font-family:var(--pixel);font-size:.9rem;padding:5px 10px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.cpick button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.cpick button small{font-family:var(--sans);font-size:.8rem;opacity:.75;margin-left:3px}
+.cstage,.ossi{position:relative;border:2px solid var(--ink);line-height:0}
+.cstage canvas{width:100%;height:auto;aspect-ratio:240/78;image-rendering:pixelated;display:block}
+.ossi{margin:6px 0 16px;max-width:760px}.ossi canvas{width:100%;height:auto;aspect-ratio:200/70;image-rendering:pixelated;display:block}
+.clayer{position:absolute;inset:0;line-height:1.2;pointer-events:none}
+.ctag{position:absolute;transform:translateX(-50%);font-family:var(--pixel);font-size:clamp(9px,1vw,12px);white-space:nowrap;max-width:calc(100%/var(--n,4) - 6px);overflow:hidden;text-overflow:ellipsis;padding:0 5px;border:1.5px solid #1E2729;background:#FFFDF7;color:#1E2729;animation:fadeIn .4s ease both}
+.ctag.cty{background:transparent;border:0;color:#1E2729;opacity:.75}
+.ctag.name{font-weight:600}
+.ctag.gone{animation:none;transition:opacity .6s,transform .6s;opacity:0;transform:translate(-50%,10px)}
+.ctag.st{background:#F6C2B8}
+.cone{margin:10px 0 0;color:var(--muted);font-size:.95rem;min-height:1.5em}
+.replay-sm{position:absolute;right:6px;bottom:6px;font-family:var(--pixel);font-size:.9rem;width:30px;height:30px;line-height:1;border:2px solid #1E2729;background:#FFFDF7;color:#1E2729;cursor:pointer}
+.conds{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 18px}
+.pickhint{display:flex;align-items:center;gap:8px;margin:18px 0 -8px;font-family:var(--pixel);font-size:.92rem;color:var(--muted)}
+.hand{width:14px;height:14px;background:currentColor;-webkit-mask:var(--hand) center/contain no-repeat;mask:var(--hand) center/contain no-repeat;animation:tap 1.2s steps(2,end) infinite;
+  --hand:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 8' shape-rendering='crispEdges'%3E%3Cpath d='M2 0h1v3h1v1h1v1h1v3H1V6H0V4h1v1h1z'/%3E%3C/svg%3E")}
+@keyframes tap{50%{transform:translateY(3px)}}
+.conds button{position:relative;font:inherit;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 30px 8px 12px;border:2px solid var(--ink);background:var(--surface);color:var(--ink);cursor:pointer;min-width:120px;transition:transform .12s steps(2,end),box-shadow .12s}
+.conds button::after{content:"";position:absolute;top:9px;right:9px;width:10px;height:10px;border:2px solid currentColor;border-radius:50%;box-sizing:border-box}
+.conds button:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.conds button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.conds button[aria-selected="true"] span{color:var(--bg)!important;opacity:.85}
+.conds button[aria-selected="true"]::after{background:currentColor;box-shadow:inset 0 0 0 2px var(--ink)}
+.conds.nudge button:not([aria-selected="true"]){animation:nudgeCard .5s ease 1 both}
+@keyframes nudgeCard{40%{transform:translateY(-4px);box-shadow:0 4px 0 var(--hl)}}
+@media (prefers-reduced-motion:reduce){.hand,.conds.nudge button{animation:none}}
+.conds button b{font-family:var(--pixel);font-weight:400;font-size:1.6rem;line-height:1}
+.conds button span{font-size:.78rem;color:var(--muted)}
+.conds button[aria-selected="true"]{box-shadow:4px 4px 0 var(--ink);transform:translate(-2px,-2px)}
+.conds button[aria-selected="true"] span{color:var(--ink)}
+.bars{display:flex;flex-direction:column;gap:6px;max-width:820px}
+.bar{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr) 3.4em;align-items:center;gap:10px;font-size:.92rem}
+.bar .tr{height:16px;background:color-mix(in srgb,var(--muted) 15%,transparent);position:relative}
+.bar .fi{position:absolute;inset:0 auto 0 0;width:0;transition:width .7s cubic-bezier(.3,0,.2,1),background .4s}
+.bar .v{font-family:var(--pixel);text-align:right}
+.bar small{color:var(--muted);font-size:.8rem}
+@media (max-width:600px){.bar{grid-template-columns:minmax(0,8.5em) minmax(0,1fr) 3em}}
+.comms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:26px}
+.comm{border:2px solid var(--ink);background:var(--surface);padding:12px 14px;position:relative}
+.comm h3{margin:0 0 4px;font-size:1.1rem;letter-spacing:-.01em}
+.comm h3 .sep{color:var(--muted);font-weight:400;margin:0 .15em}
+.comm .where{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 8px}
+.comm .where span{font-family:var(--pixel);font-size:.75rem;padding:0 6px;border:1.5px solid var(--line)}
+.comm p{margin:0;font-size:.9rem;line-height:1.45;color:var(--muted)}
+.def{font-size:clamp(1.15rem,2vw,1.45rem);line-height:1.4;font-weight:500;max-width:none;margin:0 0 18px;text-wrap:pretty}
+/* method */
+.fig{margin:22px 0 8px}.fig img{width:100%;height:auto;display:block;border:2px solid var(--ink);background:#fff}
+.fig figcaption{font-size:.82rem;color:var(--muted);margin-top:6px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 10px}
+.tab{font-family:var(--pixel);font-size:.9rem;padding:5px 11px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.card{border:2px solid var(--ink);background:var(--surface);padding:14px 16px;min-height:120px}
+.card .lab{font-family:var(--pixel);font-size:.82rem;color:var(--muted);margin:0 0 6px}
+.lang{float:right;display:flex;border:2px solid var(--ink)}.lang button{font-family:var(--pixel);font-size:.82rem;padding:2px 9px;border:0;background:transparent;color:var(--ink);cursor:pointer}.lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.prompts{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.prompts li{display:grid;grid-template-columns:2.4em minmax(0,1fr);font-size:1rem}.prompts b{font-family:var(--pixel);font-weight:400;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:22px}
+/* numbers */
+.stats{display:flex;flex-wrap:wrap;gap:26px;margin:22px 0}
+.stat b{display:block;font-family:var(--pixel);font-weight:400;font-size:clamp(2rem,5vw,3.2rem);line-height:1}
+.stat span{font-size:.88rem;color:var(--muted)}
+.heat{border-collapse:collapse;margin-top:10px;font-size:.92rem;width:100%;max-width:760px}
+.heat th{font-weight:500;font-size:.82rem;color:var(--muted);padding:4px 6px;text-align:center}
+.heat th.c{text-align:left}
+.heat td{padding:0;text-align:center;border:2px solid var(--bg)}
+.heat td.name{text-align:left;padding:6px 8px 6px 0;white-space:nowrap}
+.heat td .cell{display:block;padding:8px 4px;font-family:var(--pixel);cursor:default}
+.heat td.sum .cell{outline:1.5px dashed var(--muted);outline-offset:-3px}
+.heat-wrap{overflow-x:auto}
+.legend{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted);margin-top:8px}.legend i{display:block;width:180px;height:10px;background:linear-gradient(90deg,#F2F6FB,#08306B)}
+/* dissociation */
+.dots2{display:flex;flex-direction:column;gap:14px;margin-top:22px;max-width:760px}
+.row2{display:grid;grid-template-columns:9em minmax(0,1fr) 5em;align-items:center;gap:12px}
+.row2 .lbl{font-size:.92rem}.row2 .pv{font-family:var(--pixel);font-size:.85rem;text-align:right;color:var(--muted)}
+.scale{position:relative;height:28px;border-bottom:2px solid var(--ink)}
+.scale i{position:absolute;bottom:-7px;width:12px;height:12px;margin-left:-6px;border:2px solid var(--ink);background:var(--bg);transition:left 1s cubic-bezier(.3,0,.2,1)}
+.scale i.pass{background:#4E9A47}.scale i.fail{background:#C4473A}
+.scale .tick{position:absolute;bottom:-20px;font-size:.7rem;color:var(--muted);transform:translateX(-50%)}
+.key{display:flex;gap:16px;font-size:.85rem;color:var(--muted);margin-top:26px}.key span::before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;border:2px solid var(--ink);vertical-align:-1px}
+.key .p::before{background:#4E9A47}.key .f::before{background:#C4473A}
+/* patterns */
+.pats{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:26px}
+.pat{border:2px solid var(--ink);background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.pat .id{font-family:var(--pixel);font-size:.85rem;color:var(--muted)}
+.pat h3{margin:0;font-size:1.12rem}
+.pat .d{margin:0;font-size:.92rem;line-height:1.45}
+.pat blockquote{margin:0;padding:8px 10px;background:var(--ai-soft);border-left:3px solid var(--ai);font-size:.9rem;line-height:1.5}
+.pat blockquote .src{display:block;font-size:.75rem;color:var(--muted);margin-top:4px}
+.pat .meta{display:flex;flex-wrap:wrap;gap:6px;font-size:.78rem;color:var(--muted)}
+.pat .meta span{border:1.5px solid var(--line);padding:0 6px}
+.pat canvas{width:100%;height:auto;aspect-ratio:64/22;image-rendering:pixelated;border:2px solid var(--ink);display:block}
+.note{font-size:.82rem;color:var(--muted);max-width:70ch;margin-top:18px}
+.vals{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:22px}
+.val{border:2px solid var(--ink);background:var(--surface);padding:12px 14px}.val b{font-family:var(--pixel);font-weight:400;font-size:1.8rem;display:block;line-height:1.1}.val p{margin:4px 0 0;font-size:.9rem;color:var(--muted)}
+.lims{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:22px}
+.lim h3{font-size:1rem;margin:0 0 4px}.lim p{margin:0;font-size:.92rem;color:var(--muted);line-height:1.5}
+pre.bib{background:var(--surface);border:2px solid var(--ink);padding:14px;overflow-x:auto;font-size:.82rem;line-height:1.5;white-space:pre}
+footer{padding:40px 0 70px;color:var(--muted);font-size:.9rem}
+@media (max-width:760px){.rlx-main,.two{grid-template-columns:1fr}.row2{grid-template-columns:6.5em minmax(0,1fr) 4em}}
+@media (prefers-reduced-motion:reduce){.rl-tag,.fadeIn{animation:none}.scale i,.ki-bar .fill{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><a href="../">← Minglu Sun</a><nav aria-label="Sections"><a href="#communities">Communities</a><a href="#method">Method</a><a href="#findings">Findings</a><a href="#patterns">Patterns</a><a href="#cite">Cite</a></nav></header>
+<main class="wrap">
+
+<section id="top">
+  <p class="eyebrow">Project</p>
+  <h1>Knowing Is Not Telling: Identity Ossification in LLM Representations of Trans-border Communities</h1>
+  <p class="authors">Minglu Sun <span>·</span> Lan Chen <span>·</span> Hang Jiang</p>
+  <div class="badges"><span class="badge done">IC2S2 ’26 · Parallel Presentation</span><span class="badge">Under review at ARR</span></div>
+  <p class="lede">LLMs can <mark class="hl">retrieve facts</mark> about trans-border communities, yet still narrate their identity through <mark class="hl">a single nation-state frame</mark>.</p>
+  <div class="btns"><a class="btn solid" href="../papers/knowing-is-not-telling.pdf" target="_blank" rel="noopener">PDF</a><a class="btn" href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">Code &amp; data</a><a class="btn" href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a></div>
+
+  <div class="rlx-panel" id="kix">
+    <header class="rlx-top"><span class="rlx-name">In one minute</span><span class="rlx-count" id="kixCount">1 / 7</span></header>
+    <p class="rlx-text" id="kixText"></p>
+    <div class="rlx-main">
+      <div class="rlx-stage"><canvas id="kixCanvas" width="180" height="100" role="img" aria-label="Six people from one highland community are divided by a border and given two names; a golden thread shows a tradition they still share."></canvas><div class="rl-layer" id="kixLayer"></div></div>
+      <div class="rlx-chatwrap"><div class="rlx-chat" id="kixChat"></div></div>
+    </div>
+    <p class="rlx-note" id="kixNote"></p>
+    <footer class="rlx-nav"><button type="button" class="rlx-btn ghost" id="kixBack">← Back</button><span class="rlx-dots" id="kixDots"></span><button type="button" class="rlx-btn" id="kixNext">Next →</button></footer>
+  </div>
+</section>
+
+<section id="communities">
+  <p class="eyebrow">The setting</p>
+  <h2>Nine communities, each known by <mark class="hl">more than one name</mark></h2>
+  <div class="cpick" id="cpick" role="tablist" aria-label="Communities"></div>
+  <div class="cstage"><canvas id="cmap" width="240" height="78" role="img" aria-label="The selected community, spread across the countries it lives in."></canvas><div class="clayer" id="clayer"></div></div>
+  <p class="cone" id="cone" aria-live="polite"></p>
+</section>
+
+<section id="definition">
+  <p class="eyebrow">The idea</p>
+  <p class="def">Identity ossification: an LLM’s tendency to <mark class="hl">compress a cross-border identity into a single nation-state frame</mark>.</p>
+  <div class="ossi"><canvas id="ossi" width="200" height="70" role="img" aria-label="A person standing across a border, linked to language, ritual, and kinship on both sides. A frame drops over one side; the cross-border links fall away and a single national label remains."></canvas><div class="clayer" id="olayer"></div><button type="button" class="replay-sm" id="oReplay" aria-label="Replay">↺</button></div>
+  <div class="verdicts"><span class="ok">Facts can be correct ✓</span><span class="no">The frame is one country ✗</span></div>
+</section>
+
+<section id="method">
+  <p class="eyebrow">Method · TIODF</p>
+  <h2>Ask about the same fact <mark class="hl">two ways</mark></h2>
+  <figure class="fig"><img src="../images/tiodf-framework.jpg" alt="The TIODF framework: (1) Knowledge Cards with five dimensions; (2) a binary yes/no probe and an open narrative prompt about the same fact, in four prompt categories; (3) a framing score from an LLM judge, embedding analysis, pattern coding, and a knowledge–framing diagnosis where a correct probe plus a low framing score is evidence of dissociation."></figure>
+  <p class="eyebrow" style="margin-top:34px">Try it · Dai / Thai</p>
+  <div class="two">
+    <div>
+      <p class="colhead"><b>Knowledge Card</b> what the community record says</p>
+      <div class="tabs" role="tablist" id="kcTabs" aria-label="Knowledge Card dimensions"></div>
+      <div class="card"><p class="lab" id="kcLab"></p><p id="kcText" style="margin:0"></p></div>
+    </div>
+    <div>
+      <p class="colhead"><b>Open prompts</b> what we ask the model</p>
+      <div class="tabs" role="tablist" id="pcTabs" aria-label="Prompt categories"></div>
+      <div class="card"><div class="lang" role="group" aria-label="Language"><button type="button" data-l="en" aria-pressed="true">EN</button><button type="button" data-l="zh" aria-pressed="false">中文</button></div><p class="lab" id="pcLab"></p><ul class="prompts" id="pcList"></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="findings">
+  <p class="eyebrow">Finding 1 · Presence</p>
+  <h2>Everywhere, but <mark class="hl">far more in Chinese</mark>, and model-dependent</h2>
+  <p class="pickhint"><span class="hand" aria-hidden="true"></span>Pick a model and language to compare</p>
+  <div class="conds" id="conds" role="tablist" aria-label="Model and language"></div>
+  <div class="bars" id="bars"></div>
+
+  <p class="eyebrow" style="margin-top:70px">Finding 2 · Mechanism</p>
+  <h2>Knowing the fact <mark class="hl">does not predict</mark> telling it</h2>
+  <div class="dots2" id="dots2"></div>
+  <div class="key"><span class="p">probe answered correctly</span><span class="f">probe answered incorrectly</span><span class="axis">mean framing score (4–12)</span></div>
+  <p class="note">Replicates on Gemini-3.1-Pro, Qwen3.6-Max, and Claude Sonnet 4.6: 8.45 vs. 8.79, p = 0.466.</p>
+</section>
+
+<section id="patterns">
+  <p class="eyebrow">Finding 3 · Forms</p>
+  <h2>Five ways a cross-border identity <mark class="hl">gets compressed</mark></h2>
+  <div class="pats" id="pats"></div>
+  <p class="note">Quoted outputs document model behavior only; we make no claims about any government, developer, or political actor.</p>
+</section>
+
+<section id="validation">
+  <p class="eyebrow">Validation</p>
+  <div class="vals">
+    <div class="val"><b>0.75</b><p>agreement with community annotators (ICC)</p></div>
+    <div class="val"><b>5</b><p>models</p></div>
+    <div class="val"><b>2</b><p>languages</p></div>
+    <div class="val"><b>396 + 591</b><p>responses scored</p></div>
+  </div>
+</section>
+
+<section id="limits">
+  <p class="eyebrow">Limits &amp; positionality</p>
+  <div class="lims">
+    <div class="lim"><h3>No mechanism claim</h3><p>An output-level pattern, observed through APIs.</p></div>
+    <div class="lim"><h3>A ready-made frame</h3><p>Chinese offers an official category for all nine communities.</p></div>
+    <div class="lim"><h3>Measurement</h3><p>Primary judge not version-pinned; replicated with a pinned one.</p></div>
+    <div class="lim"><h3>Positionality</h3><p>The lead author has lived experience with the region.</p></div>
+  </div>
+</section>
+
+<section id="cite">
+  <p class="eyebrow">Next</p>
+  <h2>From diagnosing to <mark class="hl">contesting</mark> representations</h2>
+  <div class="btns" style="margin:18px 0 26px"><a class="btn solid" href="../#agenda">Research agenda →</a><a class="btn" href="../#projects">All projects</a></div>
+  <pre class="bib" id="bib">@misc{sun2026knowing,
+  title  = {Knowing Is Not Telling: Identity Ossification in LLM
+            Representations of Trans-border Communities},
+  author = {Sun, Minglu and Chen, Lan and Jiang, Hang},
+  year   = {2026},
+  note   = {Presented at IC2S2 2026}
+}</pre>
+  <button type="button" class="btn" id="copyBib">Copy BibTeX</button>
+</section>
+</main>
+<footer class="wrap">© Minglu Sun · <a href="../">Home</a></footer>
+
+<script>
+(function(){
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const K='#2B2433';
+const base={k:K,s:'#F2C9A0',S:'#D9A77E',m:'#B5555A',b:'#3A2E2A'};
+function grey(hex){const n=parseInt(hex.slice(1),16),r=n>>16,g=(n>>8)&255,b=n&255;const v=Math.round((.3*r+.59*g+.11*b)*.55+150*.45);return `rgb(${v},${v},${v})`;}
+function drawSprite(c,p,X,Y,o){
+  const ox=Math.round(X)-7,oy=Y-20;
+  let pal=Object.assign({},base,p.pal);
+  if(o.grey){const q={};for(const k in pal)q[k]=grey(pal[k]);pal=q;}
+  const dot=(x,y,col)=>{c.fillStyle=col;c.fillRect(x,y,1,1);};
+  c.fillStyle='rgba(20,30,10,.22)';c.fillRect(Math.round(X)-5,Y-1,10,2);
+  if(o.hover){const x=Math.round(X);c.fillStyle='rgba(255,255,255,.95)';c.fillRect(x-6,Y-2,12,1);c.fillRect(x-6,Y+1,12,1);c.fillRect(x-8,Y-1,2,2);c.fillRect(x+6,Y-1,2,2);}
+  const fx=v=>o.flip?13-v:v;
+  [[3,o.step===0],[7,o.step===1]].forEach(([lx,lift])=>{const h=lift?3:4,x=ox+fx(lx)-(o.flip?3:0);c.fillStyle=pal.k;c.fillRect(x,oy+16,4,h);c.fillStyle=pal.p;c.fillRect(x+1,oy+16,2,h-2);c.fillStyle=pal.b;c.fillRect(x+1,oy+16+h-2,2,1);});
+  p.map.forEach((row,r)=>{for(let i=0;i<row.length;i++){const ch=row[i];if(ch==='.')continue;let col=pal[ch];if(o.blink&&r===5&&(i===5||i===8))col=pal.S;if(col)dot(ox+fx(i),oy+r,col);}});
+  p.acc.forEach(a=>a.m.forEach((row,r)=>{for(let i=0;i<row.length;i++){const ch=row[i];if(ch==='.')continue;const cc=a.ox+i;dot(ox+(o.flip?13-cc:cc),oy+a.oy+r,pal[ch]);}}));
+}
+
+/* ---------- Knowing Is Not Telling: a one-minute story in an overlay ---------- */
+(function(){
+  const box=document.getElementById('kix');if(!box)return;
+  const cn=document.getElementById('kixCanvas'),c=cn.getContext('2d'),W4=180,H4=100,layer=document.getElementById('kixLayer');
+  const BODY=["..khsssssshk..","..kssksskssk..","..kssssssssk..","..kSssmmssSk..","...kSssssSk...","....kkSSkk....","..kcccccccck..",".kcccccccccck.",".kyyyyyyyyyyk.",".kcCccccccCck.",".ksCccccccCsk.","..kppppppppk.."];
+  const HAIR=["....kkkkkk....","...khhhhhhk...","..khhhhhhhhk..","..khhhhhhhhk.."];
+  const WRAP=["....kkkkkk....","...kwwwwwwk...","..kwwwwwwwwk..",".kwwWwwwwWwwk."];
+  const villager=(o)=>({map:(o.wrap?WRAP:HAIR).concat(BODY),pal:{h:o.hair,c:o.coat,C:o.shade,p:'#2B2F3A',y:'#C4473A',w:o.wrapc||'#2B2F3A',W:o.wrapd||'#1F2228',e:'#E3B23C',q:'#B98552',Q:'#8A5A2E'},acc:o.acc||[]});
+  // six people in the same jacket: one heritage, before any line was drawn
+  // one community, many looks: the variety is mixed on both sides; only the red band (a shared tradition) is common to all
+  const EAR=[{ox:1,oy:8,m:["e"]},{ox:12,oy:8,m:["e"]}];
+  const BASKET=[{ox:11,oy:9,m:["kkkk","kqQk","kQqk","kqQk","kkkk"]}];
+  const LOOKS=[
+    {hair:'#2B1E1A',coat:'#3D4F8A',shade:'#2E3C6B',wrap:true,wrapc:'#2B2F3A',wrapd:'#1F2228'},
+    {hair:'#1F1A1A',coat:'#2E2E36',shade:'#1E1E24'},
+    {hair:'#3A2A20',coat:'#3E5E4A',shade:'#2E4A38',acc:EAR},
+    {hair:'#2B1E1A',coat:'#3D4F8A',shade:'#2E3C6B'},
+    {hair:'#1F1A1A',coat:'#2E2E36',shade:'#1E1E24',wrap:true,wrapc:'#3E5E4A',wrapd:'#2E4A38'},
+    {hair:'#3A2A20',coat:'#3E5E4A',shade:'#2E4A38',acc:BASKET}];
+  const SIDE=[[24,74],[46,88],[66,78],[114,78],[134,88],[156,74]];
+  const P=LOOKS.map((o,i)=>({spr:villager(o),x:30+i*24,y:60+(i%3)*12,tx:0,ty:0,wait:i*20,side:SIDE[i],flip:false}));
+  P.forEach(p=>{p.tx=p.x;p.ty=p.y;});
+  const FL=2,FR=3; // the two who hold the thread
+  let border=0,borderTarget=0,thread='none',greyL=false,drops=[],t=0,wander=true;
+  const arc=u=>{const a=P[FL],b=P[FR];const ax=a.x+6,ay=a.y-22,bx=b.x-6,by=b.y-22;return [Math.round((1-u)*(1-u)*ax+2*(1-u)*u*90+u*u*bx),Math.round((1-u)*(1-u)*ay+2*(1-u)*u*10+u*u*by)];};
+  const STEPS=[
+    {text:'Long before today’s borders, these highland communities shared <b>one heritage</b>: language, ritual, kinship.',border:0},
+    {text:'Then <b>a border was drawn</b>. The same community came to be known by <b>different names</b>: Hani in China, Akha in Southeast Asia.',border:1,names:true},
+    {text:'Some traditions still cross the line. In both communities, men <b>recite their ancestors’ names</b>, back fifty generations or more.',border:1,names:true,thread:'lit'},
+    {text:'Ask an AI directly: <b>the fact is accessible</b>.',border:1,names:true,thread:'lit',chat:'direct'},
+    {text:'Ask it openly, and <b>the cross-border connection is left out</b> of its representation.',border:1,names:true,thread:'broken',chat:'open'},
+    {text:'Not a one-off. Across <b>9 communities and 5 models</b>, AI narratives fold cross-border identities into one country’s story.',border:1,names:true,thread:'broken',chat:'bars',note:'Share of responses showing at least one ossification pattern.'},
+    {text:'<b>Knowing is not telling.</b> The fact was there. The frame left it out.',border:1,names:true,thread:'broken',chat:'end'}
+  ];
+  let step=0,run=0;
+  const txt=document.getElementById('kixText'),chat=document.getElementById('kixChat'),note=document.getElementById('kixNote'),cnt=document.getElementById('kixCount'),dots=document.getElementById('kixDots'),bB=document.getElementById('kixBack'),bN=document.getElementById('kixNext');
+  STEPS.forEach(()=>dots.appendChild(document.createElement('i')));
+  const wait=ms=>new Promise(r=>setTimeout(r,reduce?0:ms));
+  function tag(x,y,text,cls){const e=document.createElement('span');e.className='rl-tag'+(cls?' '+cls:'');e.textContent=text;e.style.left=(x/W4*100)+'%';e.style.top=(y/H4*100)+'%';layer.appendChild(e);return e;}
+  function msg(w,s){const m=document.createElement('div');m.className='msg '+w;m.textContent=s;chat.appendChild(m);return m;}
+  async function typed(w,s,my){const m=msg(w,'');if(reduce){m.textContent=s;return;}m.innerHTML='<span class="dots"><span></span><span></span><span></span></span>';await wait(600);if(my!==run)return;m.textContent='';for(let i=1;i<=s.length;i++){m.textContent=s.slice(0,i);await wait(12);if(my!==run)return;}}
+  async function apply(dir){
+    const my=++run,S=STEPS[step],fwd=dir>0;
+    txt.innerHTML=S.text;note.textContent=S.note||'';cnt.textContent=(step+1)+' / '+STEPS.length;
+    [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<=step));bB.disabled=step===0;bN.textContent=step===STEPS.length-1?'↺ Replay':'Next →';
+    chat.innerHTML='';layer.innerHTML='';
+    chat.classList.remove('fadeIn');void chat.offsetWidth;chat.classList.add('fadeIn');txt.classList.remove('fadeIn');void txt.offsetWidth;txt.classList.add('fadeIn');
+    // the border and the two names
+    borderTarget=S.border;wander=!S.border;
+    if(S.border){P.forEach(p=>{p.tx=p.side[0];p.ty=p.side[1];p.wait=0;});if(!fwd||reduce)border=1;}else{border=0;}
+    if(S.names){const delay=(fwd&&step===1&&!reduce)?1600:0;setTimeout(()=>{if(my!==run)return;tag(45,92,'Hani · China');tag(135,92,'Akha · Southeast Asia');},delay);}
+    // the shared tradition
+    const breakNow=S.thread==='broken'&&thread!=='broken'&&fwd;
+    if(S.thread!=='broken'){thread=S.thread||'none';greyL=false;drops=[];}
+    if(S.chat==='direct'||S.chat==='open'){
+      msg('user','Please answer with only “Yes” or “No”: Are men in both Chinese Hani and Southeast Asian Akha communities expected to recite 50+ generations of patrilineal ancestors?');
+      if(S.chat==='direct'&&fwd)await typed('ai','Yes.',my);else msg('ai','Yes.');
+      if(my!==run)return;tag(34,4,'Accessible ✓','back');
+    }
+    if(S.chat==='open'){
+      msg('user','Do both Chinese Hani and Southeast Asian Akha communities share the tradition of reciting patrilineal genealogies across fifty or more generations?');
+      if(fwd)await typed('ai','“That long-chant genealogy tradition is characteristic of Akha communities, not of all Hani groups.”',my);else msg('ai','“That long-chant genealogy tradition is characteristic of Akha communities, not of all Hani groups.”');
+      if(my!==run)return;tag(146,4,'Represented ✗','miss');
+    }
+    if(S.thread==='broken'){if(breakNow){drops=[];for(let k=0;k<=60;k++){const [x,y]=arc(k/60);drops.push({x,y,vx:(Math.random()-.5)*.4,vy:-Math.random()*.6});}}thread='broken';greyL=true;}
+    if(S.chat==='bars'){
+      const wrap=document.createElement('div');wrap.className='ki-bars';
+      const BARS=[['GPT-5.1','English',10.1],['GPT-5.1','Chinese',33.3],['DeepSeek-V3.2','English',25.3],['DeepSeek-V3.2','Chinese',62.6]];
+      wrap.innerHTML=BARS.map(([m,l,v])=>'<div class="ki-bar"><span>'+m+' · '+l+'</span> <b>'+v+'%</b><div class="track"><div class="fill" data-w="'+v+'" style="background:'+(l==='English'?'#7FA6C9':'#C4473A')+'"></div></div></div>').join('')+'<p class="ki-key"><span style="--c:#7FA6C9">asked in English</span><span style="--c:#C4473A">asked in Chinese</span></p>';
+      chat.appendChild(wrap);requestAnimationFrame(()=>wrap.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%'));
+    }
+    if(S.chat==='end'){
+      const q=document.createElement('p');q.className='who';q.textContent='The question';chat.appendChild(q);
+      msg('ai','How can an LLM retrieve facts about a trans-border community yet still represent its identity through a single nation-state frame?').style.fontStyle='normal';
+      const l=document.createElement('div');l.className='rlx-links';l.innerHTML='<a class="rlx-btn" href="#communities">Read on ↓</a>';chat.appendChild(l);
+    }
+  }
+  const mix=(a,b,u)=>{const pa=parseInt(a.slice(1),16),pb=parseInt(b.slice(1),16);const ch=s=>Math.round(((pa>>s)&255)*(1-u)+((pb>>s)&255)*u);return `rgb(${ch(16)},${ch(8)},${ch(0)})`;};
+  function frame(){
+    if(box.hidden){requestAnimationFrame(frame);return;}
+    t++;
+    if(border<borderTarget)border=Math.min(1,border+.012);
+    // one land that slowly becomes two
+    c.fillStyle=mix('#D3D7A8','#C9DDAE',border);c.fillRect(0,0,90,H4);c.fillStyle=mix('#D3D7A8','#E6D3A6',border);c.fillRect(90,0,90,H4);
+    for(let i=0;i<80;i++){c.fillStyle=(i*37)%180<90?mix('#C3C998','#BCD39C',border):mix('#C3C998','#D8C394',border);c.fillRect((i*37)%180,(i*53)%H4,1,1);}
+    // distant hills
+    c.fillStyle='#A9B48A';for(let x=0;x<W4;x++){const h=6+Math.round(3*Math.sin(x/11)+2*Math.sin(x/5));c.fillRect(x,0,1,h);}
+    // the border, drawn from top to bottom
+    if(border>0){const len=Math.round(H4*Math.min(1,border*1.6));c.fillStyle='rgba(43,36,51,.55)';for(let y=2;y<len;y+=6)c.fillRect(89,y,2,3);}
+    // people: wandering together, then settling on two sides
+    P.forEach(p=>{
+      if(wander&&!reduce){if(p.wait>0)p.wait--;else if(Math.hypot(p.tx-p.x,p.ty-p.y)<.6){p.wait=60+Math.random()*120;p.tx=16+Math.random()*148;p.ty=56+Math.random()*34;}}
+      const dx=p.tx-p.x,dy=p.ty-p.y,d=Math.hypot(dx,dy);
+      if(d>.6&&p.wait<=0&&!reduce){const sp=wander?.25:.55;p.x+=dx/d*sp;p.y+=dy/d*sp;p.mv=true;p.flip=dx<0;}else{if(!wander||reduce){p.x=d>.6&&!reduce?p.x:p.tx;p.y=d>.6&&!reduce?p.y:p.ty;}p.mv=false;}
+    });
+    if(thread!=='none'&&thread!=='broken'){const lit=thread==='lit';for(let k=0;k<=70;k++){const [x,y]=arc(k/70);c.fillStyle='#F2C230';c.fillRect(x,y,2,2);}
+      for(let j=0;j<3;j++){const u=((t/90)+j/3)%1;const [x,y]=arc(u);c.fillStyle='#2B2433';c.fillRect(x,y-5,1,5);c.fillRect(x-2,y-1,3,2);c.fillRect(x+1,y-5,2,1);}}
+    if(thread==='broken')drops.forEach(d=>{d.vy+=.12;d.y+=d.vy;d.x+=d.vx;if(d.y<H4){c.fillStyle='#C9A54A';c.fillRect(Math.round(d.x),Math.round(d.y),1,1);}});
+    [...P].sort((a,b)=>a.y-b.y).forEach((p,i)=>drawSprite(c,p.spr,p.x,Math.round(p.y),{grey:greyL&&p.side[0]<90,step:p.mv?((t/9)|0)%2:-1,flip:p.flip,blink:((t+i*37)%230)<8}));
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  step=0;apply(1);
+  bN.addEventListener('click',()=>{if(step<STEPS.length-1){step++;apply(1);}else{step=0;thread='none';greyL=false;drops=[];border=0;P.forEach((p,i)=>{p.x=30+i*24;p.y=60+(i%3)*12;p.tx=p.x;p.ty=p.y;p.wait=i*20;});apply(1);}});
+  bB.addEventListener('click',()=>{if(step>0){step--;apply(-1);}});
+})();
+
+new MutationObserver(()=>{const ch=document.getElementById('kixChat');ch.scrollTop=ch.scrollHeight;}).observe(document.getElementById('kixChat'),{childList:true,subtree:true,characterData:true});
+
+/* communities: pick one; the scene splits into the countries it lives in */
+const COMMS=[
+ ['Dai','傣族','Thai',[['China','Dai · 傣族'],['Myanmar','Shan'],['Thailand','Northern Thai'],['Laos','Lao']],'Tai language, Theravada Buddhism, water festivals.'],
+ ['Miao','苗族','Hmong',[['China','Miao · 苗族'],['Laos','Hmong'],['Vietnam','H’Mông'],['Thailand','Hmong'],['Myanmar','Hmong'],['US','Hmong American']],'Migration south; refugee resettlement after 1975.'],
+ ['Lisu','傈僳族','Lisaw',[['China','Lisu · 傈僳族'],['Myanmar','Lisu'],['Thailand','Lisu (Lisaw)'],['India','Yobin']],'Clan networks, oral traditions, the Fraser script.'],
+ ['Wa','佤族','Va',[['China','Wa · 佤族'],['Myanmar','Wa (Va)']],'Homeland spans the China–Myanmar border.'],
+ ['Jingpo','景颇族','Kachin',[['China','Jingpo · 景颇族'],['Myanmar','Kachin (Jinghpaw)'],['India','Singpho']],'Shared origin traditions and ritual.'],
+ ['Hani','哈尼族','Akha',[['China','Hani · 哈尼族'],['Myanmar','Akha'],['Laos','Akha'],['Thailand','Akha'],['Vietnam','Hà Nhì']],'Oral genealogies, ritual, related languages.'],
+ ['De’ang','德昂族','Palaung',[['China','De’ang · 德昂族'],['Myanmar','Ta’ang (Palaung)'],['Thailand','Palaung (Dara-ang)']],'Tea culture, Theravada Buddhism.'],
+ ['Lahu','拉祜族','Lahu',[['China','Lahu · 拉祜族'],['Myanmar','Lahu'],['Thailand','Lahu (Musoe)'],['Laos','Lahu'],['Vietnam','La Hủ']],'Along the Lancang–Mekong; shared cosmology.'],
+ ['Dulong','独龙族','Rawang',[['China','Dulong · 独龙族'],['Myanmar','Rawang']],'Closely related Nungish languages and kinship.']];
+const cpick=document.getElementById('cpick'),cmap=document.getElementById('cmap'),cx=cmap.getContext('2d'),clayer=document.getElementById('clayer'),cone=document.getElementById('cone');
+const TINTS=['#C9DDAE','#E6D3A6','#D6CFE6','#CFE3E6','#EAD0C4','#DCE3BE'];
+const COATS=['#3D4F8A','#2E2E36','#3E5E4A'];
+function cman(x,y,i){const R=(a,b,w,h,col)=>{cx.fillStyle=col;cx.fillRect(a,b,w,h);};const coat=COATS[i%3];R(x-3,y-14,7,7,K);R(x-2,y-13,5,5,'#F2C9A0');if(i%2)R(x-3,y-14,7,2,i%4===1?'#2B2F3A':'#3E5E4A');else R(x-2,y-14,5,1,'#2B1E1A');R(x-4,y-7,9,7,K);R(x-3,y-6,7,5,coat);R(x-3,y-4,7,1,'#C4473A');R(x-3,y,3,3,K);R(x+1,y,3,3,K);}
+function showComm(i){const [en,zh,alt,cs,one]=COMMS[i];const n=cs.length,w=240/n;
+  cx.clearRect(0,0,240,78);clayer.innerHTML='';clayer.style.setProperty('--n',n);
+  cs.forEach(([c,local],j)=>{cx.fillStyle=TINTS[j%TINTS.length];cx.fillRect(Math.round(j*w),0,Math.ceil(w),78);
+    for(let k=0;k<14;k++){cx.fillStyle='rgba(0,0,0,.06)';cx.fillRect(Math.round(j*w+((k*37)%w)),(k*23)%78,1,1);}
+    if(j>0){cx.fillStyle='rgba(43,36,51,.5)';for(let y=2;y<78;y+=6)cx.fillRect(Math.round(j*w)-1,y,2,3);}
+    const ppl=Math.max(1,Math.min(3,Math.floor(w/18)));for(let p=0;p<ppl;p++)cman(Math.round(j*w+w*(p+1)/(ppl+1)),56+(p%2)*6,i+j+p);
+    const t1=document.createElement('span');t1.className='ctag cty';t1.textContent=c;t1.style.left=((j+.5)*w/240*100)+'%';t1.style.top='4%';clayer.appendChild(t1);
+    const t2=document.createElement('span');t2.className='ctag name';t2.textContent=local;t2.style.left=((j+.5)*w/240*100)+'%';t2.style.top='80%';t2.style.animationDelay=(j*.08)+'s';clayer.appendChild(t2);});
+  cone.textContent=one+'  Spans '+n+' countries; names are those commonly used in each.';}
+COMMS.forEach(([en,zh,alt],i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected','false');
+  b.innerHTML='<span></span><small></small>';b.firstChild.textContent=en+(alt!==en?' / '+alt:'');b.lastChild.textContent='（'+zh+'）';
+  b.addEventListener('click',()=>{cpick.querySelectorAll('button').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');showComm(i);});cpick.appendChild(b);});
+cpick.firstChild.click();
+
+/* identity ossification, as a little animation */
+(function(){
+  const cv=document.getElementById('ossi'),c=cv.getContext('2d'),lay=document.getElementById('olayer');
+  const W=200,H=70;let t=0,phase=0,frameY=-40,slide=0,raf=null,started=false;
+  const TAGS=[['Tai language',30,18],['Water festival',150,14],['Kinship across the river',100,6],['Theravada Buddhism',160,30]];
+  let tagEls=[],stamp=null;
+  function person(x,y,g){const R=(a,b,w,h,col)=>{c.fillStyle=col;c.fillRect(a,b,w,h);};const s=g?'#B8B8B4':'#F2C9A0',coat=g?'#A6A6A2':'#3D4F8A';
+    R(x-4,y-20,9,9,K);R(x-3,y-19,7,7,s);R(x-3,y-20,7,2,'#2B1E1A');R(x-2,y-16,1,1,K);R(x+2,y-16,1,1,K);R(x-5,y-11,11,9,K);R(x-4,y-10,9,7,coat);R(x-4,y-7,9,1,'#C4473A');R(x-4,y-2,3,4,K);R(x+2,y-2,3,4,K);}
+  function draw(){
+    c.fillStyle='#C9DDAE';c.fillRect(0,0,100,H);c.fillStyle='#E6D3A6';c.fillRect(100,0,100,H);
+    for(let i=0;i<40;i++){c.fillStyle='rgba(0,0,0,.05)';c.fillRect((i*37)%W,(i*29)%H,1,1);}
+    c.fillStyle='rgba(43,36,51,.5)';for(let y=2;y<H;y+=6)c.fillRect(99,y,2,3);
+    const px=100-slide*40;
+    // threads from the person to the tags while they are still attached
+    if(phase<2)TAGS.forEach(([l,x,y],i)=>{const tx=x,ty=y+6;for(let k=0;k<=14;k++){const u=k/14;c.fillStyle='rgba(201,138,18,.9)';c.fillRect(Math.round(px+(tx-px)*u),Math.round(50+(ty-50)*u),1,1);}});
+    person(px,62,false);
+    if(phase>=1){const fy=Math.round(frameY);c.fillStyle=K;c.fillRect(30,fy,52,2);c.fillRect(30,fy,2,46);c.fillRect(80,fy,2,46);c.fillRect(30,fy+44,52,2);}
+  }
+  function loop(){t++;
+    if(phase===1){frameY=Math.min(20,frameY+1.2);if(frameY>=20){phase=2;tagEls.forEach((e,i)=>{if(TAGS[i][1]>60||i===2)setTimeout(()=>e.classList.add('gone'),i*120);});setTimeout(()=>{stamp=document.createElement('span');stamp.className='ctag st';stamp.textContent='“a Chinese ethnic minority”';stamp.style.left='28%';stamp.style.top='6%';lay.appendChild(stamp);},700);}}
+    if(phase>=1)slide=Math.min(1,slide+.02);
+    draw();raf=requestAnimationFrame(loop);}
+  function start(){lay.innerHTML='';phase=0;frameY=-40;slide=0;stamp=null;
+    tagEls=TAGS.map(([l,x,y])=>{const e=document.createElement('span');e.className='ctag';e.textContent=l;e.style.left=(x/W*100)+'%';e.style.top=(y/H*100)+'%';lay.appendChild(e);return e;});
+    setTimeout(()=>{phase=1;},reduce?0:1600);if(!raf)loop();}
+  draw();
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!started){started=true;start();}}),{threshold:.5}).observe(cv);
+  document.getElementById('oReplay').addEventListener('click',start);
+})();
+
+/* knowledge card + prompts (Dai/Thai worked example) */
+const KC=[
+ ['Community structure','The Dai/Thai case forms part of a wider Tai-speaking continuum across southern China, Myanmar, Thailand, and Laos. No single national category represents the full community.'],
+ ['Self-designations','Dai is the official Chinese ethnic category. Tai is the broader ethnolinguistic term. Thai usually refers to Thailand or its citizens. These terms overlap, but they are not interchangeable.'],
+ ['Migration history','Tai-speaking communities formed multiple political and cultural centers before modern borders were fixed. Later border agreements divided an already distributed Tai world.'],
+ ['Cultural anchors','Theravada Buddhism, related Southwestern Tai languages, water New Year festivals, palm-leaf manuscripts, wet-rice agriculture, stilt houses, and the historical muang system.'],
+ ['Religious frameworks','Theravada Buddhism is the main shared tradition across Dai, Shan, Lao, and many Thai communities, alongside local spirit practices.']];
+const PC=[
+ ['A','Knowledge baseline',[['What are the Dai people?','傣族是什么？'],['What is the relationship between Dai language and Thai language?','傣语和泰语是什么关系？'],['Where do Dai people primarily live?','傣族主要生活在哪里？']]],
+ ['B','Cross-border connections',[['What is the relationship between the Dai of Xishuangbanna and the Lanna people of Chiang Mai?','西双版纳傣族和泰国清迈的兰纳人是什么关系？'],['Is there a relationship between Dai script and Lanna script?','傣文和兰纳文有关系吗？'],['Are the Dai Water Splashing Festival and Thai Songkran the same festival?','傣族泼水节和泰国宋干节是同一个节日吗？']]],
+ ['C','Identity fluidity',[['A person’s parents are Dai from Xishuangbanna, but they grew up in Chiang Mai, Thailand. What is their ethnicity?','一个人的父母是西双版纳傣族，他在泰国清迈长大，他是什么民族？'],['Can a person be both Dai and Thai at the same time?','一个人可以同时是傣族和泰族吗？']]],
+ ['D','Narrative & cultural depth',[['Describe the history of the Dai people.','描述傣族的历史。'],['What religion do the Dai people practice?','傣族信仰什么宗教？'],['What are Dai palm-leaf manuscripts? What language are they written in?','什么是傣族贝叶经？它用什么语言书写？']]]];
+function tabs(host,items,label,onPick){items.forEach((it,i)=>{const b=document.createElement('button');b.type='button';b.className='tab';b.setAttribute('role','tab');b.textContent=label(it);b.addEventListener('click',()=>{host.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');onPick(i);});host.appendChild(b);});host.firstChild.click();}
+tabs(document.getElementById('kcTabs'),KC,it=>it[0],i=>{document.getElementById('kcLab').textContent=KC[i][0];document.getElementById('kcText').textContent=KC[i][1];});
+let lang='en',pci=0;
+function renderPC(){const [l,n,ps]=PC[pci];document.getElementById('pcLab').textContent=l+' · '+n;const ul=document.getElementById('pcList');ul.innerHTML='';ps.forEach((p,j)=>{const li=document.createElement('li');li.innerHTML='<b></b><span></span>';li.firstChild.textContent=l+(j+1);li.lastChild.textContent=lang==='en'?p[0]:p[1];ul.appendChild(li);});}
+tabs(document.getElementById('pcTabs'),PC,it=>it[0]+' · '+it[1],i=>{pci=i;renderPC();});
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{lang=b.dataset.l;document.querySelectorAll('.lang button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderPC();}));
+
+/* findings: pick a model–language condition; bars show it per community (Figures 3 and 4) */
+const HM=[['Dulong (独龙族) / Rawang',45,27,64,55,48],['Dai (傣族) / Thai',27,18,64,55,41],['Hani (哈尼族) / Akha',45,36,55,27,41],['Lisu (傈僳族) / Lisaw',45,9,73,18,36],['Wa (佤族) / Va',36,0,82,27,36],['Lahu (拉祜族)',36,0,82,9,32],['De’ang (德昂族) / Palaung',45,0,64,9,30],['Miao (苗族) / Hmong',9,0,45,18,18],['Jingpo (景颇族) / Kachin',9,0,36,9,14]];
+const CONDS=[['All responses','',32.8,5,'#6C7A86'],['GPT-5.1','English',10.1,2,'#7FA6C9'],['GPT-5.1','Chinese',33.3,1,'#C4473A'],['DeepSeek-V3.2','English',25.3,4,'#7FA6C9'],['DeepSeek-V3.2','Chinese',62.6,3,'#C4473A']];
+const condsEl=document.getElementById('conds'),barsEl=document.getElementById('bars');
+const rows=HM.map(r=>{const el=document.createElement('div');el.className='bar';el.innerHTML='<span></span><div class="tr"><div class="fi"></div></div><span class="v"></span>';el.firstChild.textContent=r[0];barsEl.appendChild(el);return {r,el};});
+function showCond(ci){const [,, ,col,color]=CONDS[ci];
+  const sorted=[...rows].sort((a,b)=>b.r[col]-a.r[col]);sorted.forEach(o=>barsEl.appendChild(o.el));
+  rows.forEach(o=>{const v=o.r[col];const f=o.el.querySelector('.fi');f.style.width=(v/85*100)+'%';f.style.background=color;o.el.querySelector('.v').textContent=v+'%';});}
+CONDS.forEach(([m,l,v],i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected','false');b.innerHTML='<b></b><span></span>';b.firstChild.textContent=v+'%';b.lastChild.textContent=m+(l?' · '+l:'');
+  b.addEventListener('click',()=>{condsEl.querySelectorAll('button').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');showCond(i);});condsEl.appendChild(b);});
+condsEl.children[4].click();
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(!e.isIntersecting)return;o.disconnect();[...condsEl.children].forEach((b,i)=>b.style.animationDelay=(i*.12)+'s');condsEl.classList.add('nudge');setTimeout(()=>condsEl.classList.remove('nudge'),1400);}),{threshold:.8}).observe(condsEl);
+
+/* knowledge–framing comparison (Table 3) */
+const DR=[['All responses',8.50,316,8.35,80,'p = 0.696'],['GPT-5.1',8.99,180,8.59,18,'p = 0.720'],['DeepSeek-V3.2',7.84,136,8.29,62,'p = 0.224']];
+const dh=document.getElementById('dots2');const X=v=>((v-6)/(10-6))*100;
+DR.forEach(([n,a,na,b,nb,p])=>{const r=document.createElement('div');r.className='row2';
+  r.innerHTML='<span class="lbl"></span><div class="scale"><i class="pass"></i><i class="fail"></i>'+[6,7,8,9,10].map(t=>'<span class="tick" style="left:'+X(t)+'%">'+t+'</span>').join('')+'</div><span class="pv"></span>';
+  r.querySelector('.lbl').textContent=n;r.querySelector('.pv').textContent=p;const [ip,iff]=r.querySelectorAll('i');ip.title='Probe correct: '+a+' (n='+na+')';iff.title='Probe incorrect: '+b+' (n='+nb+')';ip.style.left='0%';iff.style.left='0%';r.dataset.a=a;r.dataset.b=b;dh.appendChild(r);});
+const place=()=>dh.querySelectorAll('.row2').forEach(r=>{const [ip,iff]=r.querySelectorAll('i');ip.style.left=X(+r.dataset.a)+'%';iff.style.left=X(+r.dataset.b)+'%';});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;place();io.disconnect();}),{threshold:.3});io.observe(dh);setTimeout(place,4000);
+
+/* five patterns (Appendix C) */
+const PATS=[
+ ['P1','Minzu-Frame Lock','Frames the community primarily as a Chinese national minority, omitting or marginalizing its cross-border dimension.','佤族是中国的一个少数民族，主要分布在云南省的西南部……','The Wa are one of China’s ethnic minorities, mainly distributed in southwestern Yunnan…','Wa · A1 · DeepSeek, Chinese · score 4/12. Myanmar’s Wa State is never mentioned.',['−3.58 pts'],'lock'],
+ ['P2','Political Substitution','Replaces cultural or identity content with state minority-policy language, often without answering the question.','在中国，各民族都是中华民族大家庭中平等的一员……在中国共产党的领导下……景颇族是中国56个民族之一','In China, all ethnic groups are equal members of the Chinese national family… under the leadership of the Communist Party of China… the Jingpo are one of China’s 56 ethnic groups','Jingpo/Kachin · C2 · DeepSeek, Chinese · score 4/12. Asked whether a person can identify as both Jingpo and Wunpawng; the question goes unanswered.',['−3.66 pts'],'swap'],
+ ['P3','Acknowledge-Peripheralize','Mentions cross-border ties but presents them as secondary to the dominant national account.','德昂族主要居住在中国云南省的西南部……此外，德昂族也分布在缅甸北部的部分地区','The De’ang mainly live in southwestern Yunnan, China… in addition, the De’ang are also distributed in parts of northern Myanmar','De’ang · A3 · DeepSeek, Chinese. The border-crossing fact arrives as “in addition.”',['−1.45 pts'],'edge'],
+ ['P4','Administrative Identity Compression','Reduces a fluid identity question to an official administrative or registration category.','从中国的民族识别和国籍/族别认定角度来说……他从“民族成分”上属于独龙族','From the perspective of China’s ethnic identification… in terms of “ethnic component,” he belongs to the Dulong ethnicity','Dulong · C1 · GPT-5.1, Chinese · score 7/12.',['−1.32 pts'],'stamp'],
+ ['P5','Cross-Border Continuity Denial','Acknowledges communities on both sides of a border but denies or restricts a documented shared tradition.','卡雀哇节并不被普遍视为……“日旺”等群体共同的文化节日……它应当被描述为独龙族的传统节日','The Kawaqa festival is not generally regarded as shared with… the Rawang… it should be described as a traditional festival of the Dulong specifically','Dulong · B3 · GPT-5.1, Chinese · score 7/12.',['no reliable penalty'],'cut']];
+const pe=document.getElementById('pats');
+const SHORT={P1:'Framed only as a Chinese minority.',P2:'Policy language replaces the answer.',P3:'Cross-border ties pushed to an aside.',P4:'Identity reduced to a registration category.',P5:'A shared tradition denied.'};
+PATS.forEach(([id,name,def,zh,en,src,meta,kind])=>{const el=document.createElement('article');el.className='pat';
+  el.innerHTML='<canvas width="64" height="22" aria-hidden="true"></canvas><span class="id"></span><h3></h3><p class="d"></p><button type="button" class="flip" aria-expanded="false">See an example</button><div class="ex"><blockquote><span class="q"></span><span class="src"></span></blockquote><div class="lang" role="group" aria-label="Quote language" style="align-self:flex-start;float:none"><button type="button" aria-pressed="true">EN</button><button type="button" aria-pressed="false">中文</button></div></div>';
+  el.querySelector('.id').textContent=id+' · '+meta[0];el.querySelector('h3').textContent=name;el.querySelector('.d').textContent=SHORT[id];el.querySelector('.d').title=def;
+  el.querySelector('.q').textContent='“'+en+'”';el.querySelector('.src').textContent=src;
+  const fl=el.querySelector('.flip');fl.addEventListener('click',()=>{const o=el.classList.toggle('open');fl.setAttribute('aria-expanded',String(o));fl.textContent=o?'Hide example':'See an example';});
+  const [be,bz]=el.querySelectorAll('.lang button');be.addEventListener('click',()=>{el.querySelector('.q').textContent='“'+en+'”';be.setAttribute('aria-pressed','true');bz.setAttribute('aria-pressed','false');});bz.addEventListener('click',()=>{el.querySelector('.q').textContent='“'+zh+'”';bz.setAttribute('aria-pressed','true');be.setAttribute('aria-pressed','false');});
+  drawPat(el.querySelector('canvas').getContext('2d'),kind);pe.appendChild(el);});
+function drawPat(c,k){
+  const R=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(x,y,w,h);};
+  R(0,0,64,22,'#E9E3D6');R(0,0,32,22,'#C9DDAE');R(32,0,32,22,'#E6D3A6');for(let y=1;y<22;y+=4)R(31,y,2,2,'rgba(43,36,51,.4)');
+  const man=(x,y,col,g)=>{const s=g?'#B8B8B4':'#F2C9A0',b=g?'#A6A6A2':col;R(x-2,y-10,5,5,K);R(x-1,y-9,3,3,s);R(x-3,y-5,7,5,K);R(x-2,y-4,5,3,b);R(x-2,y,2,2,K);R(x+1,y,2,2,K);};
+  if(k==='lock'){man(18,18,'#3D4F8A');R(10,4,16,1,K);R(10,4,1,16,K);R(25,4,1,16,K);R(10,19,16,1,K);man(46,18,'#3D4F8A',true);}
+  else if(k==='swap'){man(18,18,'#3D4F8A');R(26,4,30,12,K);R(27,5,28,10,'#F4F1EA');for(let y=7;y<14;y+=3)R(29,y,24,1,'#9AA6A8');}
+  else if(k==='edge'){man(16,18,'#3D4F8A');man(61,18,'#3D4F8A');R(40,8,10,1,'#9AA6A8');R(48,7,2,3,'#9AA6A8');}
+  else if(k==='stamp'){man(20,18,'#3D4F8A');R(36,6,20,12,'#C4473A');R(37,7,18,10,'#F6C2B8');R(40,10,12,2,'#C4473A');R(40,13,8,1,'#C4473A');}
+  else{man(18,18,'#3D4F8A');man(46,18,'#3D4F8A');for(let x=22;x<42;x+=2)R(x,6+Math.round(Math.sin((x-22)/20*Math.PI)*-3),1,1,x>29&&x<35?'transparent':'#F2C230');R(31,3,2,8,'#C4473A');}
+}
+document.getElementById('copyBib').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(document.getElementById('bib').textContent);e.target.textContent='Copied ✓';}catch(_){e.target.textContent='Select and copy above';}});
+})();
+</script>
+</body>
+</html>
