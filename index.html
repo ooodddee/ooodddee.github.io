@@ -1499,7 +1499,7 @@ const ME={id:'me',
   let border=0,borderTarget=0,thread='none',greyL=false,drops=[],t=0,wander=true;
   const arc=u=>{const a=P[FL],b=P[FR];const ax=a.x+6,ay=a.y-22,bx=b.x-6,by=b.y-22;return [Math.round((1-u)*(1-u)*ax+2*(1-u)*u*90+u*u*bx),Math.round((1-u)*(1-u)*ay+2*(1-u)*u*10+u*u*by)];};
   const STEPS=[
-    {text:'Long before today’s borders, these highland communities shared <b>one heritage</b>: language, ritual, kinship.',border:0},
+    {text:'Before modern borders, these highland peoples belonged to <b>a shared community</b>, connected by language, ritual, and kinship.',border:0},
     {text:'Then <b>a border was drawn</b>. The same community came to be known by <b>different names</b>: Hani in China, Akha in Southeast Asia.',border:1,names:true},
     {text:'Some traditions still cross the line. In both communities, men <b>recite their ancestors’ names</b>, back fifty generations or more.',border:1,names:true,thread:'lit'},
     {text:'Ask an AI directly: <b>the fact is accessible</b>.',border:1,names:true,thread:'lit',chat:'direct'},
@@ -1517,7 +1517,7 @@ const ME={id:'me',
   async function apply(dir){
     const my=++run,S=STEPS[step],fwd=dir>0;
     txt.innerHTML=S.text;note.textContent=S.note||'';cnt.textContent=(step+1)+' / '+STEPS.length;
-    [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<=step));bB.disabled=step===0;bN.textContent=step===STEPS.length-1?'Close':'Next →';
+    [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<=step));bB.disabled=step===0;bN.textContent=step===STEPS.length-1?'↺ Replay':'Next →';
     chat.innerHTML='';layer.innerHTML='';
     chat.classList.remove('fadeIn');void chat.offsetWidth;chat.classList.add('fadeIn');txt.classList.remove('fadeIn');void txt.offsetWidth;txt.classList.add('fadeIn');
     // the border and the two names
@@ -1527,10 +1527,14 @@ const ME={id:'me',
     // the shared tradition
     const breakNow=S.thread==='broken'&&thread!=='broken'&&fwd;
     if(S.thread!=='broken'){thread=S.thread||'none';greyL=false;drops=[];}
-    if(S.chat==='direct'||S.chat==='open'){
+    if(S.chat==='direct'){
       msg('user','Please answer with only “Yes” or “No”: Are men in both Chinese Hani and Southeast Asian Akha communities expected to recite 50+ generations of patrilineal ancestors?');
-      if(S.chat==='direct'&&fwd)await typed('ai','Yes.',my);else msg('ai','Yes.');
+      if(fwd)await typed('ai','Yes.',my);else msg('ai','Yes.');
       if(my!==run)return;tag(34,4,'Accessible ✓','back');
+    }
+    if(S.chat==='open'){
+      const ps=document.createElement('p');ps.className='probe-sum';ps.innerHTML='Asked yes/no first: <b>Yes.</b> ✓';chat.appendChild(ps);
+      tag(34,4,'Accessible ✓','back');
     }
     if(S.chat==='open'){
       msg('user','Do both Chinese Hani and Southeast Asian Akha communities share the tradition of reciting patrilineal genealogies across fifty or more generations?');
@@ -1580,7 +1584,7 @@ const ME={id:'me',
   function close(){run++;box.hidden=true;document.body.style.overflow='';if(location.hash==='#knowing-is-not-telling')history.replaceState(null,'','#projects');if(lastFocus)lastFocus.focus();}
   window.openKnowing=open;
   document.querySelectorAll('[data-open-ki]').forEach(b=>b.addEventListener('click',open));
-  bN.addEventListener('click',()=>{if(step<STEPS.length-1){step++;apply(1);}else close();});
+  bN.addEventListener('click',()=>{if(step<STEPS.length-1){step++;apply(1);}else{step=0;thread='none';greyL=false;drops=[];border=0;P.forEach((p,i)=>{p.x=30+i*24;p.y=60+(i%3)*12;p.tx=p.x;p.ty=p.y;p.wait=i*20;});apply(1);}});
   bB.addEventListener('click',()=>{if(step>0){step--;apply(-1);}});
   document.getElementById('kixClose').addEventListener('click',close);
   box.addEventListener('click',e=>{if(e.target===box)close();});
