@@ -537,7 +537,7 @@ section,[id]{scroll-margin-top:64px}
         <p class="pq">How can an LLM <mark class="hl">retrieve facts</mark> about a trans-border community yet still represent its identity through <mark class="hl">a single nation-state frame</mark>?</p>
         <p class="statuses"><span class="status done">IC2S2 ’26 · Parallel Presentation</span><span class="status">Under review at ARR</span></p>
         <p class="kf"><span>Key finding</span><mark class="hl">Factual accessibility does not reliably predict narrative framing</mark>.</p>
-        <p class="pl"><button type="button" class="rl-open" data-open-ki>▶ See it in one minute</button><a href="knowing-is-not-telling-site/">Project page →</a><a href="papers/knowing-is-not-telling.pdf">PDF</a><a href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">GitHub</a><a href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a></p>
+        <p class="pl"><button type="button" class="rl-open" data-open-ki>▶ See it in one minute</button><a href="knowing-is-not-telling-site/">Project page →</a><a href="https://arxiv.org/abs/2610.12610" target="_blank" rel="noopener">arXiv</a><a href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">GitHub</a><a href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a></p>
       </div>
     </article>
     <article class="pj">
@@ -1547,7 +1547,7 @@ const ME={id:'me',
     if(S.chat==='end'){
       const q=document.createElement('p');q.className='who';q.textContent='The question';chat.appendChild(q);
       msg('ai','How can an LLM retrieve facts about a trans-border community yet still represent its identity through a single nation-state frame?').style.fontStyle='normal';
-      const l=document.createElement('div');l.className='rlx-links';l.innerHTML='<a class="rlx-btn" href="papers/knowing-is-not-telling.pdf" target="_blank" rel="noopener">PDF</a><a class="rlx-btn ghost" href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">GitHub</a><a class="rlx-btn ghost" href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a>';chat.appendChild(l);
+      const l=document.createElement('div');l.className='rlx-links';l.innerHTML='<a class="rlx-btn" href="https://arxiv.org/abs/2610.12610" target="_blank" rel="noopener">arXiv</a><a class="rlx-btn ghost" href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">GitHub</a><a class="rlx-btn ghost" href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a>';chat.appendChild(l);
     }
   }
   const mix=(a,b,u)=>{const pa=parseInt(a.slice(1),16),pb=parseInt(b.slice(1),16);const ch=s=>Math.round(((pa>>s)&255)*(1-u)+((pb>>s)&255)*u);return `rgb(${ch(16)},${ch(8)},${ch(0)})`;};
@@ -1672,12 +1672,12 @@ const ME={id:'me',
   document.addEventListener('keydown',e=>{if(box.hidden)return;if(e.key==='Escape')close();if(e.key==='ArrowRight')bN.click();if(e.key==='ArrowLeft')bB.click();});
 })();
 
-/* ---------- PDFs: on the deployed site the links open the files; inside the Claude viewer, offer the embedded copy ---------- */
+/* ---------- Downloads: inside the Claude viewer, offer the embedded CV copy ---------- */
 (async function(){
   if(!window.claude||!window.claude.use)return;
   let dl=null;try{dl=await window.claude.use('downloads');}catch(e){}
   if(!dl)return;
-  const MAP={'papers/knowing-is-not-telling.pdf':['pdf-paper','Knowing-Is-Not-Telling.pdf'],'cv.pdf':['pdf-cv','Minglu-Sun-CV.pdf']};
+  const MAP={'cv.pdf':['pdf-cv','Minglu-Sun-CV.pdf']};
   document.addEventListener('click',async ev=>{
     const a=ev.target.closest('a[href]');if(!a)return;const m=MAP[a.getAttribute('href')];if(!m)return;
     ev.preventDefault();
