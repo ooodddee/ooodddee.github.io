@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Knowing Is Not Telling · Minglu Sun</title>
+<title>Knowing Is Not Telling: Identity Ossification in LLM Representations of Trans-border Communities</title>
 <meta name="description" content="Identity ossification: LLMs can retrieve facts about trans-border communities yet still represent their identity through a single nation-state frame. A study of nine communities, five models, two languages.">
-<link rel="canonical" href="https://ooodddee.github.io/identity-ossification/">
+<link rel="canonical" href="https://ooodddee.github.io/knowing-is-not-telling/">
 <meta property="og:title" content="Knowing Is Not Telling: Identity Ossification in LLM Representations of Trans-border Communities">
 <meta property="og:description" content="LLMs can retrieve cross-border facts, yet still narrate these communities through one country.">
-<meta property="og:image" content="https://ooodddee.github.io/og-image.png">
-<link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" href="../favicon.png">
+<meta property="og:image" content="https://ooodddee.github.io/knowing-is-not-telling/images/tiodf-framework.jpg">
+<link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,650&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -46,10 +46,14 @@ h2{font-size:clamp(1.35rem,2.4vw,1.85rem);line-height:1.25;letter-spacing:-.015e
 .rlx-panel{margin-top:28px;background:var(--surface);border:3px solid var(--ink);box-shadow:6px 6px 0 rgba(0,0,0,.18);padding:clamp(14px,2.6vw,26px);display:flex;flex-direction:column;gap:14px}
 .rlx-top{display:flex;align-items:center;gap:14px}.rlx-name{font-family:var(--pixel)}.rlx-count{font-family:var(--pixel);font-size:.9rem;color:var(--muted)}
 .rlx-text{margin:0;font-size:clamp(1.05rem,1.8vw,1.35rem);line-height:1.35;font-weight:500;max-width:none;text-wrap:pretty}
-.rlx-chatwrap{position:relative;min-height:200px}
+.rlx-chatwrap{position:relative;min-height:200px;align-self:stretch}
+.rlx-chat{gap:8px}
+.rlx-chat .msg{font-size:.84rem;line-height:1.42;padding:7px 11px}
+.probe-sum{margin:0;font-size:.8rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.probe-sum b{font-family:var(--pixel);font-weight:400;color:var(--ink);background:var(--ai-soft);padding:1px 8px;border-radius:10px}
 @media (min-width:761px){.rlx-text{height:2.75em;overflow:hidden}.rlx-chat{position:absolute;inset:0;overflow:auto;padding-right:4px}.rlx-note{height:1.3em}}
 .rlx-text b{font-weight:600;background:color-mix(in srgb,#E3B23C 26%,transparent);box-shadow:inset 0 -2px 0 var(--hl);padding:0 .08em}
-.rlx-main{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(0,1fr);gap:16px;align-items:start}
+.rlx-main{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(0,1fr);gap:16px;align-items:stretch}
 .rlx-stage{position:relative;border:2px solid var(--ink);line-height:0}
 .rlx-stage canvas{width:100%;height:auto;aspect-ratio:180/100;image-rendering:pixelated;display:block}
 .rl-layer{position:absolute;inset:0;line-height:1.2;pointer-events:none}
@@ -96,6 +100,15 @@ h2{font-size:clamp(1.35rem,2.4vw,1.85rem);line-height:1.25;letter-spacing:-.015e
 .pat .ex{display:none;flex-direction:column;gap:8px}.pat.open .ex{display:flex}
 
 /* communities-cards */
+.hero2{padding-top:clamp(36px,7vh,70px)}
+.affs{list-style:none;display:flex;flex-wrap:wrap;gap:10px 22px;margin:10px 0 20px;padding:0}
+.affs li{display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
+.affs .lg{flex:none;width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 1.5px var(--line)}
+.affs .lg img{width:40px;height:40px;object-fit:contain;display:block}
+.affs .lg img.wide{width:32px;height:17px}
+.affs sup{color:var(--muted)}
+.authors{font-size:1.05rem;margin:0 0 2px}.authors a{text-decoration:none;border-bottom:1.5px solid var(--line)}
+sup{font-size:.68em;line-height:0}
 .colhead{margin:0 0 4px;font-size:.88rem;color:var(--muted)}.colhead b{font-family:var(--pixel);font-weight:400;color:var(--ink);margin-right:6px;font-size:1rem}
 .cpick{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 12px}
 .cpick button{font-family:var(--pixel);font-size:.9rem;padding:5px 10px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
@@ -181,12 +194,17 @@ h2{font-size:clamp(1.35rem,2.4vw,1.85rem);line-height:1.25;letter-spacing:-.015e
 .key{display:flex;gap:16px;font-size:.85rem;color:var(--muted);margin-top:26px}.key span::before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;border:2px solid var(--ink);vertical-align:-1px}
 .key .p::before{background:#4E9A47}.key .f::before{background:#C4473A}
 /* patterns */
-.pats{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:26px}
+.pats{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:26px;align-items:start}
 .pat{border:2px solid var(--ink);background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
 .pat .id{font-family:var(--pixel);font-size:.85rem;color:var(--muted)}
 .pat h3{margin:0;font-size:1.12rem}
 .pat .d{margin:0;font-size:.92rem;line-height:1.45}
-.pat blockquote{margin:0;padding:8px 10px;background:var(--ai-soft);border-left:3px solid var(--ai);font-size:.9rem;line-height:1.5}
+.pat blockquote{margin:0;padding:10px 12px;background:var(--ai-soft);border-left:3px solid var(--ai);font-size:.9rem;line-height:1.6;font-family:var(--sans),'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif}
+.pat blockquote .q{font-size:inherit;font-weight:400;margin:0;display:block}
+.pat .exhead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pat .exhead .lab2{font-family:var(--pixel);font-size:.78rem;color:var(--muted)}
+.pat .lang{float:none}
+.pat .lang button{font-size:.75rem;padding:1px 8px}
 .pat blockquote .src{display:block;font-size:.75rem;color:var(--muted);margin-top:4px}
 .pat .meta{display:flex;flex-wrap:wrap;gap:6px;font-size:.78rem;color:var(--muted)}
 .pat .meta span{border:1.5px solid var(--line);padding:0 6px}
@@ -203,16 +221,22 @@ footer{padding:40px 0 70px;color:var(--muted);font-size:.9rem}
 </style>
 </head>
 <body>
-<header class="top"><a href="../">← Minglu Sun</a><nav aria-label="Sections"><a href="#communities">Communities</a><a href="#method">Method</a><a href="#findings">Findings</a><a href="#patterns">Patterns</a><a href="#cite">Cite</a></nav></header>
+<header class="top"><a href="#top">Knowing Is Not Telling</a><nav aria-label="Paper links"><a href="https://arxiv.org/abs/2610.12610" target="_blank" rel="noopener">arXiv</a><a href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">Code &amp; data</a><a href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a><a href="#cite">BibTeX</a></nav></header>
 <main class="wrap">
 
 <section id="top">
   <p class="eyebrow">Project</p>
   <h1>Knowing Is Not Telling: Identity Ossification in LLM Representations of Trans-border Communities</h1>
-  <p class="authors">Minglu Sun <span>·</span> Lan Chen <span>·</span> Hang Jiang</p>
+  <p class="authors">Minglu Sun<sup>1</sup>, Lan (Helen) Chen<sup>2</sup>, Hang Jiang<sup>1,3,4</sup></p>
+  <ul class="affs" aria-label="Affiliations">
+    <li><span class="lg"><img src="images/logos/northeastern.png" alt=""></span><span><sup>1</sup>Northeastern University</span></li>
+    <li><span class="lg"><img src="images/logos/ut-austin.png" alt=""></span><span><sup>2</sup>UT Austin</span></li>
+    <li><span class="lg"><img src="images/logos/mit.png" alt="" class="wide"></span><span><sup>3</sup>MIT</span></li>
+    <li><span class="lg"><img src="images/logos/harvard.png" alt=""></span><span><sup>4</sup>Harvard University</span></li>
+  </ul>
   <div class="badges"><span class="badge done">IC2S2 ’26 · Parallel Presentation</span><span class="badge">Under review at ARR</span></div>
-  <p class="lede">LLMs can <mark class="hl">retrieve facts</mark> about trans-border communities, yet still narrate their identity through <mark class="hl">a single nation-state frame</mark>.</p>
-  <div class="btns"><a class="btn solid" href="../papers/knowing-is-not-telling.pdf" target="_blank" rel="noopener">PDF</a><a class="btn" href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">Code &amp; data</a><a class="btn" href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a></div>
+  <p class="lede">LLMs can <mark class="hl">recognize that communities span national borders</mark>, yet still represent their identities through <mark class="hl">a single nation-state lens</mark>.</p>
+  <div class="btns"><a class="btn solid" href="https://arxiv.org/abs/2610.12610" target="_blank" rel="noopener">arXiv</a><a class="btn" href="https://github.com/ooodddee/Trans-border-Representation-Probe" target="_blank" rel="noopener">Code &amp; data</a><a class="btn" href="https://docs.google.com/presentation/d/1B7m_91HunkFFlxG_p_JxqRPb96D6_n3moluTX9Qdn5Q/edit?usp=sharing" target="_blank" rel="noopener">Slides</a></div>
 
   <div class="rlx-panel" id="kix">
     <header class="rlx-top"><span class="rlx-name">In one minute</span><span class="rlx-count" id="kixCount">1 / 7</span></header>
@@ -244,7 +268,7 @@ footer{padding:40px 0 70px;color:var(--muted);font-size:.9rem}
 <section id="method">
   <p class="eyebrow">Method · TIODF</p>
   <h2>Ask about the same fact <mark class="hl">two ways</mark></h2>
-  <figure class="fig"><img src="../images/tiodf-framework.jpg" alt="The TIODF framework: (1) Knowledge Cards with five dimensions; (2) a binary yes/no probe and an open narrative prompt about the same fact, in four prompt categories; (3) a framing score from an LLM judge, embedding analysis, pattern coding, and a knowledge–framing diagnosis where a correct probe plus a low framing score is evidence of dissociation."></figure>
+  <figure class="fig"><img src="images/tiodf-framework.jpg" alt="The TIODF framework: (1) Knowledge Cards with five dimensions; (2) a binary yes/no probe and an open narrative prompt about the same fact, in four prompt categories; (3) a framing score from an LLM judge, embedding analysis, pattern coding, and a knowledge–framing diagnosis where a correct probe plus a low framing score is evidence of dissociation."></figure>
   <p class="eyebrow" style="margin-top:34px">Try it · Dai / Thai</p>
   <div class="two">
     <div>
@@ -262,7 +286,7 @@ footer{padding:40px 0 70px;color:var(--muted);font-size:.9rem}
 
 <section id="findings">
   <p class="eyebrow">Finding 1 · Presence</p>
-  <h2>Everywhere, but <mark class="hl">far more in Chinese</mark>, and model-dependent</h2>
+  <h2>Present across models, but <mark class="hl">far more prevalent in Chinese-language responses</mark>.</h2>
   <p class="pickhint"><span class="hand" aria-hidden="true"></span>Pick a model and language to compare</p>
   <div class="conds" id="conds" role="tablist" aria-label="Model and language"></div>
   <div class="bars" id="bars"></div>
@@ -281,15 +305,7 @@ footer{padding:40px 0 70px;color:var(--muted);font-size:.9rem}
   <p class="note">Quoted outputs document model behavior only; we make no claims about any government, developer, or political actor.</p>
 </section>
 
-<section id="validation">
-  <p class="eyebrow">Validation</p>
-  <div class="vals">
-    <div class="val"><b>0.75</b><p>agreement with community annotators (ICC)</p></div>
-    <div class="val"><b>5</b><p>models</p></div>
-    <div class="val"><b>2</b><p>languages</p></div>
-    <div class="val"><b>396 + 591</b><p>responses scored</p></div>
-  </div>
-</section>
+
 
 <section id="limits">
   <p class="eyebrow">Limits &amp; positionality</p>
@@ -302,20 +318,20 @@ footer{padding:40px 0 70px;color:var(--muted);font-size:.9rem}
 </section>
 
 <section id="cite">
-  <p class="eyebrow">Next</p>
-  <h2>From diagnosing to <mark class="hl">contesting</mark> representations</h2>
-  <div class="btns" style="margin:18px 0 26px"><a class="btn solid" href="../#agenda">Research agenda →</a><a class="btn" href="../#projects">All projects</a></div>
+  <p class="eyebrow">Cite</p>
   <pre class="bib" id="bib">@misc{sun2026knowing,
   title  = {Knowing Is Not Telling: Identity Ossification in LLM
             Representations of Trans-border Communities},
   author = {Sun, Minglu and Chen, Lan and Jiang, Hang},
   year   = {2026},
-  note   = {Presented at IC2S2 2026}
+  eprint = {2610.12610},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2610.12610}
 }</pre>
   <button type="button" class="btn" id="copyBib">Copy BibTeX</button>
 </section>
 </main>
-<footer class="wrap">© Minglu Sun · <a href="../">Home</a></footer>
+<footer class="wrap">© 2026 Minglu Sun, Lan (Helen) Chen, Hang Jiang</footer>
 
 <script>
 (function(){
@@ -362,7 +378,7 @@ function drawSprite(c,p,X,Y,o){
   let border=0,borderTarget=0,thread='none',greyL=false,drops=[],t=0,wander=true;
   const arc=u=>{const a=P[FL],b=P[FR];const ax=a.x+6,ay=a.y-22,bx=b.x-6,by=b.y-22;return [Math.round((1-u)*(1-u)*ax+2*(1-u)*u*90+u*u*bx),Math.round((1-u)*(1-u)*ay+2*(1-u)*u*10+u*u*by)];};
   const STEPS=[
-    {text:'Long before today’s borders, these highland communities shared <b>one heritage</b>: language, ritual, kinship.',border:0},
+    {text:'Before modern borders, these highland peoples belonged to <b>a shared community</b>, connected by language, ritual, and kinship.',border:0},
     {text:'Then <b>a border was drawn</b>. The same community came to be known by <b>different names</b>: Hani in China, Akha in Southeast Asia.',border:1,names:true},
     {text:'Some traditions still cross the line. In both communities, men <b>recite their ancestors’ names</b>, back fifty generations or more.',border:1,names:true,thread:'lit'},
     {text:'Ask an AI directly: <b>the fact is accessible</b>.',border:1,names:true,thread:'lit',chat:'direct'},
@@ -390,10 +406,14 @@ function drawSprite(c,p,X,Y,o){
     // the shared tradition
     const breakNow=S.thread==='broken'&&thread!=='broken'&&fwd;
     if(S.thread!=='broken'){thread=S.thread||'none';greyL=false;drops=[];}
-    if(S.chat==='direct'||S.chat==='open'){
+    if(S.chat==='direct'){
       msg('user','Please answer with only “Yes” or “No”: Are men in both Chinese Hani and Southeast Asian Akha communities expected to recite 50+ generations of patrilineal ancestors?');
-      if(S.chat==='direct'&&fwd)await typed('ai','Yes.',my);else msg('ai','Yes.');
+      if(fwd)await typed('ai','Yes.',my);else msg('ai','Yes.');
       if(my!==run)return;tag(34,4,'Accessible ✓','back');
+    }
+    if(S.chat==='open'){
+      const ps=document.createElement('p');ps.className='probe-sum';ps.innerHTML='Asked yes/no first: <b>Yes.</b> ✓';chat.appendChild(ps);
+      tag(34,4,'Accessible ✓','back');
     }
     if(S.chat==='open'){
       msg('user','Do both Chinese Hani and Southeast Asian Akha communities share the tradition of reciting patrilineal genealogies across fifty or more generations?');
@@ -555,7 +575,7 @@ const PATS=[
 const pe=document.getElementById('pats');
 const SHORT={P1:'Framed only as a Chinese minority.',P2:'Policy language replaces the answer.',P3:'Cross-border ties pushed to an aside.',P4:'Identity reduced to a registration category.',P5:'A shared tradition denied.'};
 PATS.forEach(([id,name,def,zh,en,src,meta,kind])=>{const el=document.createElement('article');el.className='pat';
-  el.innerHTML='<canvas width="64" height="22" aria-hidden="true"></canvas><span class="id"></span><h3></h3><p class="d"></p><button type="button" class="flip" aria-expanded="false">See an example</button><div class="ex"><blockquote><span class="q"></span><span class="src"></span></blockquote><div class="lang" role="group" aria-label="Quote language" style="align-self:flex-start;float:none"><button type="button" aria-pressed="true">EN</button><button type="button" aria-pressed="false">中文</button></div></div>';
+  el.innerHTML='<canvas width="64" height="22" aria-hidden="true"></canvas><span class="id"></span><h3></h3><p class="d"></p><button type="button" class="flip" aria-expanded="false">See an example</button><div class="ex"><div class="exhead"><span class="lab2">Model output</span><div class="lang" role="group" aria-label="Quote language"><button type="button" aria-pressed="true">EN</button><button type="button" aria-pressed="false">中文</button></div></div><blockquote><span class="q"></span><span class="src"></span></blockquote></div>';
   el.querySelector('.id').textContent=id+' · '+meta[0];el.querySelector('h3').textContent=name;el.querySelector('.d').textContent=SHORT[id];el.querySelector('.d').title=def;
   el.querySelector('.q').textContent='“'+en+'”';el.querySelector('.src').textContent=src;
   const fl=el.querySelector('.flip');fl.addEventListener('click',()=>{const o=el.classList.toggle('open');fl.setAttribute('aria-expanded',String(o));fl.textContent=o?'Hide example':'See an example';});
